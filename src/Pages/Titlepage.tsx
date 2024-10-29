@@ -19,7 +19,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 const THREE_THOUSAND = 3000
-const MAX_LOADING_DURATION = 10000
+const MAX_LOADING_DURATION = 20000
 
 const loadingMessages = [
   'Server se spouští... asi. Možná. 😬',
