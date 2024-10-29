@@ -37,6 +37,8 @@ export function Titlepage() {
     setLoadingMessage(loadingMessages[Math.floor(Math.random() * loadingMessages.length)])
 
     const fetchData = async () => {
+      setLoading(true)
+
       const timeoutId = setTimeout(() => {
         setLoading(false)
         toast({
