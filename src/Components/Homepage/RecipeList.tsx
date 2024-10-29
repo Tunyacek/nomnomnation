@@ -15,6 +15,8 @@ import {
   UnorderedList,
   ListItem,
   Tag,
+  Center,
+  Spinner,
 } from '@chakra-ui/react'
 
 import axios from 'axios'
@@ -282,11 +284,21 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
 
 const url = import.meta.env.VITE_BE_URL
 
+const loadingMessages = [
+  'Chvilinku, recepty si dávají kafe. ☕',
+  'Trpělivost, recepty mají pauzu na svačinu. 🌮',
+  'Prosím počkejte, recepty právě hledají správnou cestu. 🚦',
+  'Vydržte chvilku, recepty se ještě pečou v troubě. 🍰',
+]
+
 export const RecipeList: React.FC<RecipeListProps> = ({ selectedCategories, searchRecipe }) => {
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState('')
 
   useEffect(() => {
+    setLoadingMessage(loadingMessages[Math.floor(Math.random() * loadingMessages.length)])
+
     const fetchRecipes = async () => {
       try {
         const token = localStorage.getItem('token')
@@ -312,7 +324,14 @@ export const RecipeList: React.FC<RecipeListProps> = ({ selectedCategories, sear
   }, [])
 
   if (loading) {
-    return <div>Načítám...</div>
+    return (
+      <Center h="full" flexDirection="column" height="100vh">
+        <Spinner color="teal.500" size="lg" borderWidth="4px" />
+        <Text mt="20px" fontSize="25px">
+          {loadingMessage}
+        </Text>
+      </Center>
+    )
   }
 
   const filteredRecipes = recipes

@@ -2,7 +2,17 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { Box, Flex, FormControl, FormLabel, HStack, useToast } from '@chakra-ui/react'
+import {
+  Box,
+  Center,
+  Flex,
+  FormControl,
+  FormLabel,
+  HStack,
+  Spinner,
+  Text,
+  useToast,
+} from '@chakra-ui/react'
 import { SubmitRecipeButton } from '../Shared/Buttons/Button'
 import { InstructionList, IngredientList, CategoryList } from './ListInputs'
 import Rating from './Rating'
@@ -59,6 +69,7 @@ export const SubmitForm: React.FC = () => {
   const [ingredientList, setIngredientList] = useState<string[]>([])
   const [instructionList, setInstructionList] = useState<string[]>([])
   const [categoryList, setCategoryList] = useState<string[]>([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const toast = useToast()
   const navigate = useNavigate()
 
@@ -180,6 +191,8 @@ export const SubmitForm: React.FC = () => {
       return
     }
 
+    setIsSubmitting(true)
+
     try {
       const imageUrl = await handleImageUpload()
 
@@ -236,42 +249,58 @@ export const SubmitForm: React.FC = () => {
         duration: THREE_THOUSAND,
         isClosable: true,
       })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
   return (
     <Box>
-      <form onSubmit={handleSubmit}>
-        <Flex direction="column" maxW="600px" pt="15px" pl="15px">
-          <TitleInput value={values.title} onChange={handleInputChange} />
-          <SummaryInput value={values.summary} onChange={handleInputChange} />
-          <Box pb="5" mr="15px">
-            <ImageInput onChange={handleFileChange} />
-          </Box>
-          <IngredientList ingredientList={ingredientList} setIngredientList={setIngredientList} />
-          <InstructionList
-            instructionList={instructionList}
-            setInstructionList={setInstructionList}
-          />
-          <Box pb="5" mr="15px">
-            <FormControl isRequired>
-              <FormLabel fontWeight="semibold">Hodnocení</FormLabel>
-              <Rating count={5} value={rating} edit={true} onChange={(value) => setRating(value)} />
-            </FormControl>
-          </Box>
-          <Box pb="5" mr="15px" width="250px">
-            <PortionsInput value={values.portions} onChange={handlePortionsChange} />
-          </Box>
-          <CategoryList categoryList={categoryList} setCategoryList={setCategoryList} />
-          <HStack spacing="15px" pb="5" mr="15px">
-            <PrepTimeInput value={values.prep_time} onChange={handlePrepTimeChange} />
-            <CookTimeInput value={values.cook_time} onChange={handleCookTimeChange} />
-          </HStack>
-          <Box pb="5" mr="15px" textAlign="right">
-            <SubmitRecipeButton />
-          </Box>
-        </Flex>
-      </form>
+      {isSubmitting ? (
+        <Center height="100vh">
+          <Spinner color="teal.500" size="lg" borderWidth="4px" />
+          <Text mt="20px" fontSize="25px">
+            Recept už se řítí do databáze!
+          </Text>
+        </Center>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <Flex direction="column" maxW="600px" pt="15px" pl="15px">
+            <TitleInput value={values.title} onChange={handleInputChange} />
+            <SummaryInput value={values.summary} onChange={handleInputChange} />
+            <Box pb="5" mr="15px">
+              <ImageInput onChange={handleFileChange} />
+            </Box>
+            <IngredientList ingredientList={ingredientList} setIngredientList={setIngredientList} />
+            <InstructionList
+              instructionList={instructionList}
+              setInstructionList={setInstructionList}
+            />
+            <Box pb="5" mr="15px">
+              <FormControl isRequired>
+                <FormLabel fontWeight="semibold">Hodnocení</FormLabel>
+                <Rating
+                  count={5}
+                  value={rating}
+                  edit={true}
+                  onChange={(value) => setRating(value)}
+                />
+              </FormControl>
+            </Box>
+            <Box pb="5" mr="15px" width="250px">
+              <PortionsInput value={values.portions} onChange={handlePortionsChange} />
+            </Box>
+            <CategoryList categoryList={categoryList} setCategoryList={setCategoryList} />
+            <HStack spacing="15px" pb="5" mr="15px">
+              <PrepTimeInput value={values.prep_time} onChange={handlePrepTimeChange} />
+              <CookTimeInput value={values.cook_time} onChange={handleCookTimeChange} />
+            </HStack>
+            <Box pb="5" mr="15px" textAlign="right">
+              <SubmitRecipeButton />
+            </Box>
+          </Flex>
+        </form>
+      )}
     </Box>
   )
 }
