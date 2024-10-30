@@ -60,7 +60,6 @@ export function Titlepage() {
 
       setTimeout(async () => {
         setLoading(true)
-        await fetchData()
       }, MAX_LOADING_DURATION)
     }
 
