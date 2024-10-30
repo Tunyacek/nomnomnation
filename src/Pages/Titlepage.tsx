@@ -41,13 +41,6 @@ export function Titlepage() {
 
       const timeoutId = setTimeout(() => {
         setLoading(false)
-        toast({
-          title: 'Časový limit serveru',
-          description: 'Server reaguje příliš dlouho. Zkuste to znovu později.',
-          status: 'error',
-          duration: THREE_THOUSAND,
-          isClosable: true,
-        })
       }, MAX_LOADING_DURATION)
 
       try {
