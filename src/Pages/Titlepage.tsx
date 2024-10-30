@@ -18,7 +18,10 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
-const MAX_LOADING_DURATION = 5000
+const url = import.meta.env.VITE_BE_URL
+
+const THREE_THOUSAND = 3000
+const MAX_LOADING_DURATION = 10000
 
 const loadingMessages = [
   'Server se spouští... asi. Možná. 😬',
@@ -38,10 +41,17 @@ export function Titlepage() {
     const fetchData = async () => {
       const timeoutId = setTimeout(() => {
         setLoading(false)
+        toast({
+          title: 'Časový limit serveru',
+          description: 'Server reaguje příliš dlouho. Zkuste to znovu později.',
+          status: 'error',
+          duration: THREE_THOUSAND,
+          isClosable: true,
+        })
       }, MAX_LOADING_DURATION)
 
       try {
-        const response = await axios.get('/wakeUp')
+        const response = await axios.get(`${url}/wakeUp`)
         if (response.status === 200) {
           setLoading(false)
           clearTimeout(timeoutId)
@@ -49,6 +59,13 @@ export function Titlepage() {
       } catch (error) {
         setLoading(false)
         clearTimeout(timeoutId)
+        toast({
+          title: 'Chyba',
+          description: 'Nepodařilo se probudit server. Zkuste to znovu později.',
+          status: 'error',
+          duration: THREE_THOUSAND,
+          isClosable: true,
+        })
       }
     }
 
