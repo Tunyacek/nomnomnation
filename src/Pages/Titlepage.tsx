@@ -39,19 +39,13 @@ export function Titlepage() {
     const fetchData = async () => {
       setLoading(true)
 
-      const timeoutId = setTimeout(() => {
-        setLoading(false)
-      }, MAX_LOADING_DURATION)
-
       try {
         const response = await axios.get('/wakeUp')
         if (response.status === 200) {
           setLoading(false)
-          clearTimeout(timeoutId)
+          return
         }
       } catch (error) {
-        setLoading(false)
-        clearTimeout(timeoutId)
         toast({
           title: 'Chyba',
           description: 'Nepodařilo se probudit server. Zkuste to znovu později.',
@@ -60,6 +54,11 @@ export function Titlepage() {
           isClosable: true,
         })
       }
+
+      setTimeout(async () => {
+        setLoading(true)
+        await fetchData()
+      }, MAX_LOADING_DURATION)
     }
 
     fetchData()
