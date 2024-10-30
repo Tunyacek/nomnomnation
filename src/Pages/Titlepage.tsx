@@ -1,90 +1,12 @@
-import {
-  Box,
-  ButtonGroup,
-  Center,
-  Flex,
-  Heading,
-  Image,
-  Spinner,
-  Text,
-  useToast,
-} from '@chakra-ui/react'
+import { Box, ButtonGroup, Flex, Heading, Image, Text } from '@chakra-ui/react'
 import { Header } from '../Components/Shared/Header/Header'
 import { Footer } from '../Components/Shared/Footer/Footer'
 import potImage from '../assets/onder-ortel-rpMvlIvT9hM-unsplash.jpg'
 import { CornerRightDown } from 'lucide-react'
 import { LoginRedirect, RegisterRedirect } from '../Components/Shared/Buttons/Button'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-
-const url = import.meta.env.VITE_BE_URL
-
-const THREE_THOUSAND = 3000
-const MAX_LOADING_DURATION = 10000
-
-const loadingMessages = [
-  'Server se spouští... asi. Možná. 😬',
-  'Server si dal šlofíčka. Vydržte chvilku. 😪',
-  'Server má právě kreativní pauzu, vydržte chvilku. ✨',
-  'Server si dopřává trochu kávy. ☕',
-]
 
 export function Titlepage() {
-  const toast = useToast()
-  const [loading, setLoading] = useState(true)
-  const [loadingMessage, setLoadingMessage] = useState('')
-
-  useEffect(() => {
-    setLoadingMessage(loadingMessages[Math.floor(Math.random() * loadingMessages.length)])
-
-    const fetchData = async () => {
-      setLoading(true)
-      const timeoutId = setTimeout(() => {
-        setLoading(false)
-        toast({
-          title: 'Chyba',
-          description: 'Server je pomalý nebo spící. Zkuste to znovu později.',
-          status: 'error',
-          duration: THREE_THOUSAND,
-          isClosable: true,
-        })
-      }, MAX_LOADING_DURATION)
-
-      try {
-        const response = await axios.get(`${url}/wakeUp`)
-
-        if (response.status === 200) {
-          clearTimeout(timeoutId) // Stop the timeout if the server responds in time
-          setLoading(false)
-        }
-      } catch (error) {
-        clearTimeout(timeoutId) // Stop the timeout on error
-        toast({
-          title: 'Chyba',
-          description: 'Nepodařilo se probudit server. Zkuste to znovu později.',
-          status: 'error',
-          duration: THREE_THOUSAND,
-          isClosable: true,
-        })
-        setLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [toast])
-
-  if (loading) {
-    return (
-      <Center h="full" flexDirection="column" height="100vh">
-        <Spinner color="teal.500" size="lg" borderWidth="4px" />
-        <Text mt="20px" fontSize="25px">
-          {loadingMessage}
-        </Text>
-      </Center>
-    )
-  }
-
   return (
     <Box bg="#d0ffd5">
       <Header />
