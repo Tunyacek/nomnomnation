@@ -56,7 +56,7 @@ export function Titlepage() {
       }
 
       setTimeout(async () => {
-        setLoading(true)
+        setLoading(false)
       }, MAX_LOADING_DURATION)
     }
 
