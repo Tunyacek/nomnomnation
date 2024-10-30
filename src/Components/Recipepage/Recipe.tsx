@@ -12,6 +12,8 @@ import {
   UnorderedList,
   useToast,
   Tag,
+  Center,
+  Spinner,
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { CookingPot, Salad, Utensils } from 'lucide-react'
@@ -40,6 +42,13 @@ interface Recipe {
   rating: string
 }
 
+const loadingMessages = [
+  'Chvilinku, recept si dává kafe. ☕',
+  'Trpělivost, recept má pauzu na svačinu. 🌮',
+  'Prosím počkejte, recept právě hledá správnou cestu. 🚦',
+  'Vydržte chvilku, recept se ještě peče v troubě. 🍰',
+]
+
 const THREE_THOUSAND = 3000
 
 const url = import.meta.env.VITE_BE_URL
@@ -52,8 +61,11 @@ export function Recipe() {
 
   const [recipe, setRecipe] = useState<Recipe>()
   const [loading, setLoading] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState('')
 
   useEffect(() => {
+    setLoadingMessage(loadingMessages[Math.floor(Math.random() * loadingMessages.length)])
+
     const fetchRecipe = async () => {
       try {
         const token = localStorage.getItem('token')
@@ -108,7 +120,14 @@ export function Recipe() {
   }
 
   if (loading) {
-    return <div>Načítám...</div>
+    return (
+      <Center h="full" flexDirection="column" height="100vh">
+        <Spinner color="teal.500" size="lg" borderWidth="4px" />
+        <Text mt="20px" fontSize="25px">
+          {loadingMessage}
+        </Text>
+      </Center>
+    )
   }
 
   if (!recipe) {

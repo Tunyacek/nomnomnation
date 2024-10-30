@@ -257,7 +257,7 @@ export const SubmitForm: React.FC = () => {
   return (
     <Box>
       {isSubmitting ? (
-        <Center height="100vh">
+        <Center height="100vh" flexDirection="column">
           <Spinner color="teal.500" size="lg" borderWidth="4px" />
           <Text mt="20px" fontSize="25px">
             Recept už se řítí do databáze!
