@@ -39,26 +39,16 @@ export function Titlepage() {
     setLoadingMessage(loadingMessages[Math.floor(Math.random() * loadingMessages.length)])
 
     const fetchData = async () => {
-      const timeoutId = setTimeout(() => {
-        setLoading(false)
-        toast({
-          title: 'Časový limit serveru',
-          description: 'Server reaguje příliš dlouho. Zkuste to znovu později.',
-          status: 'error',
-          duration: THREE_THOUSAND,
-          isClosable: true,
-        })
-      }, MAX_LOADING_DURATION)
+      setLoading(true)
 
       try {
         const response = await axios.get(`${url}/wakeUp`)
+
         if (response.status === 200) {
           setLoading(false)
-          clearTimeout(timeoutId)
+          return
         }
       } catch (error) {
-        setLoading(false)
-        clearTimeout(timeoutId)
         toast({
           title: 'Chyba',
           description: 'Nepodařilo se probudit server. Zkuste to znovu později.',
@@ -67,6 +57,11 @@ export function Titlepage() {
           isClosable: true,
         })
       }
+
+      setTimeout(async () => {
+        setLoading(true)
+        await fetchData()
+      }, MAX_LOADING_DURATION)
     }
 
     fetchData()
