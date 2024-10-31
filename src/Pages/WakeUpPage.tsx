@@ -6,7 +6,7 @@ import { Navigate } from 'react-router-dom'
 const url = import.meta.env.VITE_BE_URL
 
 const THREE_THOUSAND = 3000
-const MAX_LOADING_DURATION = 10000
+const MAX_LOADING_DURATION = 30000
 
 const loadingMessages = [
   'Server se spouští... asi. Možná. 😬',
@@ -29,7 +29,7 @@ export function WakeUp() {
         setLoading(false)
         toast({
           title: 'Chyba',
-          description: 'Server je pomalý nebo spící. Zkuste to znovu později.',
+          description: 'Server je pomalý nebo spící. Zkuste to znovu.',
           status: 'error',
           duration: THREE_THOUSAND,
           isClosable: true,
