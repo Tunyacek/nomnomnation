@@ -21,11 +21,16 @@ export function Titlepage() {
             top="0"
             left="0"
             width="100%"
-            height="100%"
+            mt="150px"
             zIndex="1"
             color="black"
             textAlign="left"
             pl="100px"
+            sx={{
+              '@media screen and (max-width: 509px)': {
+                pl: '30px',
+              },
+            }}
           >
             <Heading
               fontSize="70px"
@@ -39,7 +44,7 @@ export function Titlepage() {
                 },
                 '@media screen and (max-width: 509px)': {
                   fontSize: '35px',
-                  ml: '25px',
+                  ml: '0px',
                   mb: '50px',
                 },
               }}
@@ -58,7 +63,7 @@ export function Titlepage() {
                 },
                 '@media screen and (max-width: 509px)': {
                   fontSize: '15px',
-                  ml: '25px',
+                  ml: '0px',
                   mb: '45px',
                 },
               }}
@@ -77,7 +82,7 @@ export function Titlepage() {
                 },
                 '@media screen and (max-width: 509px)': {
                   fontSize: '15px',
-                  ml: '25px',
+                  ml: '0px',
                   mb: '45px',
                 },
               }}
@@ -88,7 +93,7 @@ export function Titlepage() {
             <Flex
               direction="row"
               my="30px"
-              ml="35px"
+              ml="42px"
               fontSize="19px"
               sx={{
                 '@media screen and (max-width: 699px)': {
@@ -98,14 +103,14 @@ export function Titlepage() {
                 },
                 '@media screen and (max-width: 509px)': {
                   fontSize: '15px',
-                  ml: '25px',
+                  ml: '0px',
                   mb: '45px',
                 },
               }}
             >
               <Text>Nemáte účet? Zaregistrujte se zde</Text>
-              <Box>
-                <CornerRightDown />
+              <Box ml="5px" mt="10px">
+                <CornerRightDown size="20px" />
               </Box>
             </Flex>
             <ButtonGroup
@@ -118,7 +123,7 @@ export function Titlepage() {
                 },
                 '@media screen and (max-width: 509px)': {
                   fontSize: '15px',
-                  ml: '90px',
+                  ml: '0px',
                   width: '250px',
                 },
               }}
