@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react'
-import { SubmitForm } from '../Components/Createpage/SubmitForm'
+import { SubmitForm } from '../Components/Create-Update/Createpage/SubmitForm'
 import { Footer } from '../Components/Shared/Footer/Footer'
 import { Link, Navigate } from 'react-router-dom'
 import { BackButton } from '../Components/Shared/Buttons/Button'
