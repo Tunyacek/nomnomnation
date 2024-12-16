@@ -39,6 +39,20 @@ export function SubmitRecipeButton() {
   )
 }
 
+export function UpdateRecipeButton() {
+  return (
+    <Button
+      bg="#9acc9c"
+      _hover={{ background: '#8cb88d' }}
+      borderRadius="lg"
+      width="200px"
+      type="submit"
+    >
+      Aktualizovat recept
+    </Button>
+  )
+}
+
 export const AddImage: React.FC<AddImageProps> = ({ onUpload }) => {
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > ZERO) {

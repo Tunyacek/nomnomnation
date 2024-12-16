@@ -18,9 +18,9 @@ import {
 import axios from 'axios'
 import { CookingPot, Salad, Utensils } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import Rating, { FullStar, EmptyStar } from '../Createpage/Rating'
-import { DeleteRecipe } from '../Shared/Buttons/Button'
+import { Link, useParams } from 'react-router-dom'
+import Rating, { FullStar, EmptyStar } from '../Create-Update/Shared/Rating'
+import { DeleteRecipe, UpdateRecipe } from '../Shared/Buttons/Button'
 import { useNavigate } from 'react-router-dom'
 
 interface Category {
@@ -163,6 +163,9 @@ export function Recipe() {
   return (
     <Box>
       <Box display="flex" gap="2" justifyContent="flex-end" pr="10px" py="10px">
+        <Link to={`/update-recipe/${recipe.id}`}>
+          <UpdateRecipe />
+        </Link>
         <DeleteRecipe onClick={deleteRecipe} />
       </Box>
 

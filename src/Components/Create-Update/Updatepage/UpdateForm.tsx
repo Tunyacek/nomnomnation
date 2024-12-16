@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, type ChangeEvent, type FormEvent } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 import {
   Box,
   Center,
@@ -9,21 +7,29 @@ import {
   FormControl,
   FormLabel,
   HStack,
+  Image,
   Spinner,
   Text,
   useToast,
 } from '@chakra-ui/react'
-import { SubmitRecipeButton } from '../Shared/Buttons/Button'
-import { InstructionList, IngredientList, CategoryList } from './ListInputs'
-import Rating from './Rating'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react'
+import Rating from '../Shared/Rating'
 import {
   CookTimeInput,
   PortionsInput,
   PrepTimeInput,
   SummaryInput,
   TitleInput,
-} from './SingleInputs'
-import { ImageInput } from './ImageInput'
+} from '../Shared/SingleInputs'
+import { ImageInput } from '../Shared/ImageInput'
+import { CategoryList, IngredientList, InstructionList } from '../Shared/ListInputs'
+import { UpdateRecipeButton } from '../../Shared/Buttons/Button'
+
+interface Category {
+  id: string
+  title: string
+}
 
 interface FormValues {
   title: string
@@ -50,7 +56,14 @@ type Rating = 'ONE' | 'TWO' | 'THREE' | 'FOUR' | 'FIVE'
 
 const url = import.meta.env.VITE_BE_URL
 
-export const SubmitForm: React.FC = () => {
+const loadingMessages = [
+  'Chvilinku, recept si dává kafe. ☕',
+  'Trpělivost, recept má pauzu na svačinu. 🌮',
+  'Prosím počkejte, recept právě hledá správnou cestu. 🚦',
+  'Vydržte chvilku, recept se ještě peče v troubě. 🍰',
+]
+
+export const UpdateForm: React.FC = () => {
   const [values, setValues] = useState<FormValues>({
     title: '',
     summary: '',
@@ -64,14 +77,26 @@ export const SubmitForm: React.FC = () => {
     categoryTitles: [],
   })
 
+  const { id } = useParams<{ id: string }>()
+
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [rating, setRating] = useState<number>(ZERO)
+  const [loading, setLoading] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState('')
+  const [isUpdating, setIsUpdating] = useState(false)
+  const [categoryList, setCategoryList] = useState<string[]>([])
   const [ingredientList, setIngredientList] = useState<string[]>([])
   const [instructionList, setInstructionList] = useState<string[]>([])
-  const [categoryList, setCategoryList] = useState<string[]>([])
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const toast = useToast()
   const navigate = useNavigate()
+
+  const ratingMap: { [key: string]: number } = {
+    ONE: 1,
+    TWO: 2,
+    THREE: 3,
+    FOUR: 4,
+    FIVE: 5,
+  }
 
   const handlePrepTimeChange = (_valueAsString: string, valueAsNumber: number) => {
     setValues((prevValues) => ({
@@ -108,16 +133,76 @@ export const SubmitForm: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    setLoadingMessage(loadingMessages[Math.floor(Math.random() * loadingMessages.length)])
+
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) {
+          throw new Error('No token found')
+        }
+        const response = await axios.get(`${url}/recipes/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        const recipe = response.data
+
+        const extractedCategories = recipe.categoryId.map(
+          (item: { category: Category }) => item.category.title
+        )
+
+        setRating(ratingMap[recipe.rating] || ZERO)
+        setIngredientList(recipe.ingredients || [])
+        setCategoryList(extractedCategories || [])
+        setInstructionList(recipe.instructions || [])
+
+        setValues({
+          title: recipe.title || '',
+          summary: recipe.summary || '',
+          prep_time: recipe.prep_time || ZERO,
+          cook_time: recipe.cook_time || ZERO,
+          image_url: recipe.image_url || '',
+          portions: recipe.portions || ZERO,
+          rating: recipe.rating || 'ONE',
+          ingredients: recipe.ingredients || [],
+          instructions: recipe.instructions || [],
+          categoryTitles: recipe.categoryTitles || [],
+        })
+      } catch (error) {
+        console.error('Error fetching recipes:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [id])
+
+  useEffect(() => {
+    return () => {
+      if (imageFile) {
+        URL.revokeObjectURL(values.image_url)
+      }
+    }
+  }, [imageFile])
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[ZERO]
     if (file) {
       setImageFile(file)
+      const previewUrl = URL.createObjectURL(file)
+      setValues((prevValues) => ({
+        ...prevValues,
+        image_url: previewUrl,
+      }))
     }
   }
 
   const handleImageUpload = async (): Promise<string> => {
     if (!imageFile) {
-      return ''
+      return values.image_url
     }
 
     const formData = new FormData()
@@ -139,7 +224,7 @@ export const SubmitForm: React.FC = () => {
     }
   }
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleUpdate = async (event: FormEvent) => {
     event.preventDefault()
 
     const convertRatingToEnum = (rating: number): Rating => {
@@ -191,7 +276,7 @@ export const SubmitForm: React.FC = () => {
       return
     }
 
-    setIsSubmitting(true)
+    setIsUpdating(true)
 
     try {
       const imageUrl = await handleImageUpload()
@@ -207,7 +292,7 @@ export const SubmitForm: React.FC = () => {
 
       const token = localStorage.getItem('token')
 
-      await axios.post(`${url}/recipes`, data, {
+      await axios.put(`${url}/recipes/${id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -215,7 +300,7 @@ export const SubmitForm: React.FC = () => {
       })
 
       toast({
-        title: 'Recept úspěšně přidán.',
+        title: 'Recept úspěšně změněn.',
         status: 'success',
         duration: THREE_THOUSAND,
         isClosable: true,
@@ -250,13 +335,20 @@ export const SubmitForm: React.FC = () => {
         isClosable: true,
       })
     } finally {
-      setIsSubmitting(false)
+      setIsUpdating(false)
     }
   }
 
   return (
     <Box>
-      {isSubmitting ? (
+      {loading ? (
+        <Center h="full" flexDirection="column" height="100vh">
+          <Spinner color="teal.500" size="lg" borderWidth="4px" />
+          <Text mt="20px" fontSize="25px">
+            {loadingMessage}
+          </Text>
+        </Center>
+      ) : isUpdating ? (
         <Center height="100vh" flexDirection="column">
           <Spinner color="teal.500" size="lg" borderWidth="4px" />
           <Text mt="20px" fontSize="25px">
@@ -264,13 +356,16 @@ export const SubmitForm: React.FC = () => {
           </Text>
         </Center>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleUpdate}>
           <Flex direction="column" maxW="600px" pt="15px" pl="15px">
             <TitleInput value={values.title} onChange={handleInputChange} />
             <SummaryInput value={values.summary} onChange={handleInputChange} />
-            <Box pb="5" mr="15px">
-              <ImageInput onChange={handleFileChange} />
-            </Box>
+            <Flex direction="row" gap="90px">
+              <Box pb="5" mr="15px">
+                <ImageInput onChange={handleFileChange} />
+              </Box>
+              <Image src={values.image_url} height="150px" width="150px" borderRadius="10px" />
+            </Flex>
             <IngredientList ingredientList={ingredientList} setIngredientList={setIngredientList} />
             <InstructionList
               instructionList={instructionList}
@@ -287,7 +382,7 @@ export const SubmitForm: React.FC = () => {
                 />
               </FormControl>
             </Box>
-            <Box pb="5" mr="15px" width="250px">
+            <Box pb="5px" mr="15px" width="250px">
               <PortionsInput value={values.portions} onChange={handlePortionsChange} />
             </Box>
             <CategoryList categoryList={categoryList} setCategoryList={setCategoryList} />
@@ -296,7 +391,7 @@ export const SubmitForm: React.FC = () => {
               <CookTimeInput value={values.cook_time} onChange={handleCookTimeChange} />
             </HStack>
             <Box pb="5" mr="15px" textAlign="right">
-              <SubmitRecipeButton />
+              <UpdateRecipeButton />
             </Box>
           </Flex>
         </form>
