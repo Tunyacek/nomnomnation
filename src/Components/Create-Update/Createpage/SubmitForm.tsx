@@ -9,6 +9,7 @@ import {
   FormControl,
   FormLabel,
   HStack,
+  Image,
   Spinner,
   Text,
   useToast,
@@ -24,6 +25,7 @@ import {
   TitleInput,
 } from '../Shared/SingleInputs'
 import { ImageInput } from '../Shared/ImageInput'
+import placeholderImage from '../../../assets/sdf.jpg'
 
 interface FormValues {
   title: string
@@ -112,12 +114,17 @@ export const SubmitForm: React.FC = () => {
     const file = event.target.files?.[ZERO]
     if (file) {
       setImageFile(file)
+      const previewUrl = URL.createObjectURL(file)
+      setValues((prevValues) => ({
+        ...prevValues,
+        image_url: previewUrl,
+      }))
     }
   }
 
   const handleImageUpload = async (): Promise<string> => {
     if (!imageFile) {
-      return ''
+      return placeholderImage
     }
 
     const formData = new FormData()
@@ -125,6 +132,7 @@ export const SubmitForm: React.FC = () => {
 
     try {
       const response = await axios.post(`${url}/images`, formData)
+      console.log(response.data.path)
       return response.data.path
     } catch (err) {
       const error = err as Error
@@ -195,6 +203,7 @@ export const SubmitForm: React.FC = () => {
 
     try {
       const imageUrl = await handleImageUpload()
+      setValues((prevValues) => ({ ...prevValues, image_url: imageUrl }))
 
       const data = {
         ...values,
@@ -268,9 +277,26 @@ export const SubmitForm: React.FC = () => {
           <Flex direction="column" maxW="600px" pt="15px" pl="15px">
             <TitleInput value={values.title} onChange={handleInputChange} />
             <SummaryInput value={values.summary} onChange={handleInputChange} />
-            <Box pb="5" mr="15px">
-              <ImageInput onChange={handleFileChange} />
-            </Box>
+            <Flex
+              direction={{ base: 'column', md: 'row' }}
+              gap="90px"
+              sx={{
+                '@media screen and (max-width: 767px)': {
+                  gap: '0px',
+                  pb: '40px',
+                },
+              }}
+            >
+              <Box pb="5" mr="15px">
+                <ImageInput onChange={handleFileChange} />
+              </Box>
+              <Image
+                src={values.image_url || placeholderImage}
+                height="150px"
+                width="150px"
+                borderRadius="10px"
+              />
+            </Flex>
             <IngredientList ingredientList={ingredientList} setIngredientList={setIngredientList} />
             <InstructionList
               instructionList={instructionList}
