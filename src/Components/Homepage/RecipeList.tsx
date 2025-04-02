@@ -49,99 +49,23 @@ interface RecipeListProps {
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   return (
-    <Box
-      sx={{
-        '@media screen and (max-width: 699px)': {
-          pl: '70px',
-        },
-        '@media screen and (max-width: 659px)': {
-          pl: '50px',
-        },
-        '@media screen and (max-width: 619px)': {
-          pl: '30px',
-        },
-        '@media screen and (max-width: 569px)': {
-          pl: '0px',
-        },
-      }}
-    >
+    <Box>
       <Card
         my="5px"
         mx="5px"
-        width="450px"
-        height="650px"
+        maxW="400px"
+        maxH="650px"
         sx={{
-          '@media screen and (max-width: 1900px)': {
-            width: '420px',
-            height: '500px',
-            mx: '0px',
-          },
-          '@media screen and (max-width: 1850px)': {
-            width: '400px',
-            height: '500px',
-            mx: '0px',
-          },
-          '@media screen and (max-width: 1720px)': {
-            width: '380px',
-            height: '500px',
-            mx: '0px',
+          '@media screen and (min-width: 900px) and (max-width: 1140px)': {
+            maxW: '600px',
+            ml: '30px',
           },
 
-          '@media screen and (max-width: 1600px)': {
-            width: '350px',
-            height: '500px',
-            mx: '0px',
+          '@media screen and (min-width: 515px) and (max-width: 699px)': {
+            maxW: '600px',
           },
-          '@media screen and (max-width: 1470px)': {
-            width: '330px',
-            height: '500px',
-            mx: '0px',
-          },
-          '@media screen and (max-width: 1440px)': {
-            width: '420px',
-            height: '500px',
-          },
-          '@media screen and (max-width: 1340px)': {
-            width: '400px',
-            height: '500px',
-          },
-          '@media screen and (max-width: 1285px)': {
-            width: '380px',
-            height: '500px',
-            mx: '0px',
-          },
-          '@media screen and (max-width: 1190px)': {
-            width: '360px',
-            height: '500px',
-            mx: '0px',
-          },
-          '@media screen and (max-width: 1140px)': {
-            width: '445px',
-            height: '500px',
-          },
-          '@media screen and (max-width: 960px)': {
-            width: '400px',
-            height: '500px',
-          },
-          '@media screen and (max-width: 860px)': {
-            width: '380px',
-            height: '500px',
-          },
-          '@media screen and (max-width: 820px)': {
-            width: '360px',
-            height: '500px',
-          },
-          '@media screen and (max-width: 790px)': {
-            width: '340px',
-            height: '500px',
-          },
-          '@media screen and (max-width: 740px)': {
-            width: '320px',
-            height: '500px',
-          },
-          '@media screen and (max-width: 699px)': {
-            width: '475px',
-            height: '500px',
+          '@media screen and (max-width: 509px)': {
+            ml: '30px',
           },
         }}
       >
@@ -152,78 +76,18 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                 <Image
                   objectFit="cover"
                   src={recipe.image_url}
-                  width="400px"
+                  width="300px"
                   height="300px"
-                  sx={{
-                    '@media screen and (max-width: 1900px)': {
-                      width: '300px',
-                      height: '200px',
-                    },
-                    '@media screen and (max-width: 1440px)': {
-                      width: '300px',
-                      height: '200px',
-                    },
-                    '@media screen and (max-width: 1340px)': {
-                      width: '250px',
-                      height: '175px',
-                    },
-                  }}
                   alt={recipe.title}
                   borderRadius="lg"
                 />
               </Flex>
               <Stack mt="6" spacing="3">
-                <Heading
-                  size="md"
-                  textAlign="center"
-                  fontSize="23px"
-                  sx={{
-                    '@media screen and (max-width: 1850px)': {
-                      fontSize: '20px',
-                    },
-                    '@media screen and (max-width: 1385px)': {
-                      fontSize: '18px',
-                    },
-                    '@media screen and (max-width: 699px)': {
-                      fontSize: '23px',
-                    },
-                  }}
-                >
+                <Heading size="md" textAlign="center" fontSize="23px">
                   {recipe.title}
                 </Heading>
                 <Divider />
-                <Text
-                  noOfLines={3}
-                  fontSize="19px"
-                  textAlign="center"
-                  height="100px"
-                  maxHeight="85px"
-                  sx={{
-                    '@media screen and (max-width: 1850px)': {
-                      fontSize: '18px',
-                    },
-                    '@media screen and (max-width: 1385px)': {
-                      fontSize: '16px',
-                      height: '80px',
-                      maxHeight: '70px',
-                    },
-                    '@media screen and (max-width: 790px)': {
-                      height: '80px',
-                      maxHeight: '70px',
-                      fontSize: '15px',
-                    },
-                    '@media screen and (max-width: 735px)': {
-                      height: '80px',
-                      maxHeight: '75px',
-                      fontSize: '16px',
-                    },
-                    '@media screen and (max-width: 699px)': {
-                      fontSize: '14px',
-                      height: '80px',
-                      maxHeight: '65px',
-                    },
-                  }}
-                >
+                <Text noOfLines={3} fontSize="19px" textAlign="center" height="85px">
                   {recipe.summary}
                 </Text>
               </Stack>
@@ -236,7 +100,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             {recipe.categoryId?.map((categoryRel, index) => (
               <Tag
                 justifyContent={'center'}
-                width="160px"
+                maxW="160px"
                 height="35px"
                 fontSize="15px"
                 color="#f8fae5"
@@ -244,33 +108,6 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                 variant="solid"
                 bg="#9acc9c"
                 margin="1px"
-                sx={{
-                  '@media screen and (max-width: 1850px)': {
-                    width: '120px',
-                    height: '25px',
-                    fontSize: '12px',
-                  },
-
-                  '@media screen and (max-width: 1440px)': {
-                    width: '150px',
-                    fontSize: '14px',
-                  },
-                  '@media screen and (max-width: 790px)': {
-                    width: '140px',
-                    height: '30px',
-                    fontSize: '12px',
-                  },
-                  '@media screen and (max-width: 740px)': {
-                    width: '130px',
-                    height: '25px',
-                    fontSize: '10px',
-                  },
-                  '@media screen and (max-width: 699px)': {
-                    width: '175px',
-                    height: '30px',
-                    fontSize: '13px',
-                  },
-                }}
               >
                 {categoryRel.category.title}
               </Tag>

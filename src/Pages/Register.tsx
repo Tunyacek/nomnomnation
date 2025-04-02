@@ -104,7 +104,7 @@ export function RegisterForm() {
         </Link>
       </Box>
       <Box
-        minHeight="83.2vh"
+        minHeight="72.8vh"
         bg="#f3fff4"
         display="flex"
         justifyContent="center"
@@ -124,10 +124,11 @@ export function RegisterForm() {
                 <Input
                   type="email"
                   borderColor="#9acc9c"
-                  width="400px"
+                  maxW="400px"
                   bg="white"
                   focusBorderColor="#9acc9c"
                   onChange={(e) => setEmail(cleanInput(e.target.value))}
+                  sx={{ '@media screen and (max-width: 509px)': { maxW: '250px' } }}
                 />
               </FormControl>
             </Box>
@@ -136,17 +137,22 @@ export function RegisterForm() {
                 <FormLabel>Uživatelské jméno</FormLabel>
                 <Input
                   borderColor="#9acc9c"
-                  width="400px"
+                  maxW="300px"
                   bg="white"
                   focusBorderColor="#9acc9c"
                   onChange={(e) => setUsername(cleanInput(e.target.value))}
+                  sx={{ '@media screen and (max-width: 509px)': { maxW: '250px' } }}
                 />
               </FormControl>
             </Box>
             <Box>
               <FormControl isRequired>
                 <FormLabel>Heslo</FormLabel>
-                <InputGroup size="md" width="400px">
+                <InputGroup
+                  size="md"
+                  maxW="400px"
+                  sx={{ '@media screen and (max-width: 509px)': { maxW: '250px' } }}
+                >
                   <Input
                     pr="4.5rem"
                     type={showPassword ? 'text' : 'password'}
@@ -173,7 +179,11 @@ export function RegisterForm() {
             <Box>
               <FormControl isRequired>
                 <FormLabel>Kontrola hesla</FormLabel>
-                <InputGroup size="md" width="400px">
+                <InputGroup
+                  size="md"
+                  maxW="400px"
+                  sx={{ '@media screen and (max-width: 509px)': { maxW: '250px' } }}
+                >
                   <Input
                     pr="4.5rem"
                     type={showPasswordConfirm ? 'text' : 'password'}
@@ -198,7 +208,7 @@ export function RegisterForm() {
               </FormControl>
             </Box>
           </Flex>
-          <Box ml="160px" mt="30px">
+          <Box ml="100px" mt="30px">
             <RegisterSubmit />
           </Box>
         </form>

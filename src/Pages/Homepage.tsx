@@ -60,8 +60,11 @@ export function Homepage() {
 
   return (
     <Flex direction="column" minHeight="100vh" bg="#f3fff4">
-      <Header />
-
+      <Box bg="#d0ffd5">
+        <Box ml="10px">
+          <Header />
+        </Box>
+      </Box>
       <Box>
         <Toolbar onCategoryChange={handleCategoryChange} onSearchChange={handleSearchChange} />
       </Box>

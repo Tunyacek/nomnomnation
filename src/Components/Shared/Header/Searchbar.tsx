@@ -28,9 +28,6 @@ export function Searchbar({ onSearchChange }: SearchbarProps) {
           onChange={handleChange}
           focusBorderColor="#9acc9c"
           sx={{
-            '@media screen and (max-width: 1272px)': {
-              width: '600px',
-            },
             '@media screen and (max-width: 1996px)': {
               width: '600px',
             },
@@ -39,6 +36,9 @@ export function Searchbar({ onSearchChange }: SearchbarProps) {
             },
             '@media screen and (max-width: 767px)': {
               width: '375px',
+            },
+            '@media screen and (max-width: 509px)': {
+              width: '300px',
             },
           }}
         />

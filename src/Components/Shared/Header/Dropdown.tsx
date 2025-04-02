@@ -61,9 +61,6 @@ export function Dropdown({ onCategoryChange }: DropdownProps) {
     <Box
       width="600px"
       sx={{
-        '@media screen and (max-width: 1272px)': {
-          width: '450px',
-        },
         '@media screen and (max-width: 1996px)': {
           width: '450px',
         },
@@ -74,6 +71,9 @@ export function Dropdown({ onCategoryChange }: DropdownProps) {
           width: '375px',
           pb: '20px',
           ml: '30px',
+        },
+        '@media screen and (max-width: 509px)': {
+          width: '300px',
         },
       }}
     >

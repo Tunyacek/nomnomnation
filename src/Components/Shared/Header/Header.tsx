@@ -1,6 +1,6 @@
 import { Box, Flex, Spacer, Image } from '@chakra-ui/react'
 import { CreateButton, LoginRedirect, Logout } from '../Buttons/Button.tsx'
-import logo from '../../../assets/logo_cream.jpeg'
+import logo from '../../../assets/NomNomNew.png'
 import { Link } from 'react-router-dom'
 //import axios from 'axios'
 import axiosInstance from '../../../lib/interceptors/axios.ts'
@@ -24,7 +24,7 @@ export function Header() {
 
   if (auth) {
     links = (
-      <Flex direction="column" mr="30px">
+      <Flex direction="column" mr="10px">
         <Box py="10px" display="flex" justifyContent="center">
           <Logout onClick={logout} />
         </Box>
@@ -47,7 +47,7 @@ export function Header() {
   return (
     <Box as="header">
       <Box>
-        <Flex ml="5px" bg="#d0ffd5" align="center">
+        <Flex bg="#d0ffd5" align="center">
           <HeaderLogo />
           <Spacer />
           {links}
@@ -60,7 +60,19 @@ export function Header() {
 export function HeaderLogo() {
   return (
     <Box ml="10px">
-      <Image src={logo} width="110px" height="110px" borderRadius="100%" />
+      <Image
+        src={logo}
+        width="100px"
+        height="100px"
+        my="5px"
+        sx={{
+          '@media screen and (max-width: 509px)': {
+            width: '70px',
+            height: '70px',
+            my: '5px',
+          },
+        }}
+      />
     </Box>
   )
 }

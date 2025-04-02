@@ -16,7 +16,15 @@ export function Toolbar({ onCategoryChange, onSearchChange }: HeaderProps) {
   })
 
   return (
-    <Box bg="#B0EBB4" height={['130px', '130px', '80px']}>
+    <Box
+      bg="#B0EBB4"
+      height="80px"
+      sx={{
+        '@media screen and (max-width: 770px)': {
+          height: '130px',
+        },
+      }}
+    >
       <Flex direction={flexDisplayDirection} alignItems="center" height="100%">
         <Box
           ml="15px"
