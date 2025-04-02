@@ -71,22 +71,23 @@ export function LoginForm() {
   }
 
   return (
-    <Box bg="#d0ffd5">
+    <Box bg="#d0ffd5" pt="5px">
       <Box ml="5px">
         <HeaderLogo />
       </Box>
       <Box bg="#B0EBB4" height="80px">
-        <Link to={`/`}>
+        <Link to={`/home`}>
           <BackButton />
         </Link>
       </Box>
       <Box
-        minHeight="83.2vh"
+        minHeight="72.3vh"
         bg="#f3fff4"
         display="flex"
         justifyContent="center"
         alignItems="center"
         flexDirection="column"
+        sx={{ '@media screen and (max-width: 509px)': { minHeight: '74.2vh' } }}
       >
         <Flex>
           <Text as="b" fontSize="30px" m="20px">
@@ -104,13 +105,18 @@ export function LoginForm() {
                   bg="white"
                   focusBorderColor="#9acc9c"
                   onChange={(e) => setUsername(cleanInput(e.target.value))}
+                  sx={{ '@media screen and (max-width: 650px)': { maxW: '250px' } }}
                 />
               </FormControl>
             </Box>
             <Box>
               <FormControl isRequired>
                 <FormLabel>Heslo</FormLabel>
-                <InputGroup size="md" width="400px">
+                <InputGroup
+                  size="md"
+                  maxW="400px"
+                  sx={{ '@media screen and (max-width: 650px)': { maxW: '250px' } }}
+                >
                   <Input
                     pr="4.5rem"
                     type={show ? 'text' : 'password'}
@@ -135,7 +141,11 @@ export function LoginForm() {
               </FormControl>
             </Box>
           </Flex>
-          <Box ml="175px" mt="30px">
+          <Box
+            ml="175px"
+            mt="30px"
+            sx={{ '@media screen and (max-width: 650px)': { ml: '100px' } }}
+          >
             <LoginSubmit />
           </Box>
         </form>

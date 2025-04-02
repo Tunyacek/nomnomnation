@@ -128,7 +128,7 @@ export function RegisterForm() {
                   bg="white"
                   focusBorderColor="#9acc9c"
                   onChange={(e) => setEmail(cleanInput(e.target.value))}
-                  sx={{ '@media screen and (max-width: 509px)': { maxW: '250px' } }}
+                  sx={{ '@media screen and (max-width: 650px)': { maxW: '250px' } }}
                 />
               </FormControl>
             </Box>
@@ -141,7 +141,7 @@ export function RegisterForm() {
                   bg="white"
                   focusBorderColor="#9acc9c"
                   onChange={(e) => setUsername(cleanInput(e.target.value))}
-                  sx={{ '@media screen and (max-width: 509px)': { maxW: '250px' } }}
+                  sx={{ '@media screen and (max-width: 650px)': { maxW: '250px' } }}
                 />
               </FormControl>
             </Box>
@@ -151,7 +151,7 @@ export function RegisterForm() {
                 <InputGroup
                   size="md"
                   maxW="400px"
-                  sx={{ '@media screen and (max-width: 509px)': { maxW: '250px' } }}
+                  sx={{ '@media screen and (max-width: 650px)': { maxW: '250px' } }}
                 >
                   <Input
                     pr="4.5rem"
@@ -182,7 +182,7 @@ export function RegisterForm() {
                 <InputGroup
                   size="md"
                   maxW="400px"
-                  sx={{ '@media screen and (max-width: 509px)': { maxW: '250px' } }}
+                  sx={{ '@media screen and (max-width: 650px)': { maxW: '250px' } }}
                 >
                   <Input
                     pr="4.5rem"
@@ -208,7 +208,7 @@ export function RegisterForm() {
               </FormControl>
             </Box>
           </Flex>
-          <Box ml="100px" mt="30px">
+          <Box ml="100px" mt="30px" sx={{ '@media screen and (max-width: 650px)': { ml: '80px' } }}>
             <RegisterSubmit />
           </Box>
         </form>
